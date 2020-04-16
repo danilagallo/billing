@@ -2,6 +2,11 @@ class Utils:
 
     @staticmethod
     def percent_vat(self, code):
+        """
+        Returns the VAT percent according to code
+        :param code:
+        :return: float value
+        """
         if code == 1:
             return 10.05
         elif code == 2:
@@ -11,6 +16,12 @@ class Utils:
 
     @staticmethod
     def calculate_vat_value(self, code, price):
+        """
+        Return the vat value according to cod and price
+        :param code:
+        :param price:
+        :return: float value
+        """
         if code == 1:
             return price * 0.1005
         elif code == 2:
@@ -20,15 +31,33 @@ class Utils:
 
     @staticmethod
     def calculate_net_price(self, price, quantity):
+        """
+        Return net price
+        :param price:
+        :param quantity:
+        :return: float value
+        """
         return price * quantity
 
     @staticmethod
     def calculate_sale_price(self, net_price, vat_value):
+        """
+        Return sale price
+        :param net_price:
+        :param vat_value:
+        :return: float value
+        """
         return net_price + vat_value
 
     @staticmethod
     def get_all(self, code, price, quantity):
-
+        """
+        Return a dictionary with all the calculations related to an invoice
+        :param code:
+        :param price:
+        :param quantity:
+        :return: dict
+        """
         vat_value = Utils.calculate_vat_value(code, price)
         net_price = Utils.calculate_net_price(code, quantity)
         vat = Utils.percent_vat(code)

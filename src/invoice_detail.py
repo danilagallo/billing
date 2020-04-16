@@ -12,3 +12,4 @@ class InvoiceDetail:
         self.sale_price = sale_price
         self.net_price = net_price
         self.vat_value = vat_value
+        self.status = "in_progress"
