@@ -15,6 +15,8 @@ class Billing:
         self.invoice_list: list()
         self.invoice_dict = dict()
         self.credit_notes_dict = dict()
+        filename = f"{datetime.datetime.now().date()}_{datetime.datetime.now().time()}-operations.out"
+        self.file = open(filename, "w")
 
     def make_invoices(self, orders: list):
         """
@@ -102,4 +104,19 @@ class Billing:
                 )
 
     def generate_operations(self):
-        pass
+        """
+        Generate the operations of the day
+        every line of the file has the following format
+        client_number-document_type-letter-issue_date
+        :return: None
+        """
+        for invoice in self.invoice_dict:
+            client = invoice.invoice_header.client
+            client_number = client.client_number
+            document_type = client.identity_type
+            letter = invoice.invoice_header.letter
+            issue_date = invoice.invoice_header.issue_date
+            self.file.write(
+                f"{client_number}-{document_type}-{letter}-{issue_date} \n"
+            )
+        self.file.close()
