@@ -1,4 +1,5 @@
 import datetime
+import threading
 
 from src.credit_note import CreditNote
 from src.credit_note_footer import CreditNoteFooter
@@ -18,14 +19,49 @@ class Billing:
         filename = f"{datetime.datetime.now().date()}_{datetime.datetime.now().time()}-operations.out"
         self.file = open(filename, "w")
 
-    def make_invoices(self, orders: list):
+    def make_invoices(self, orders: list, number_threads=4, min_number_for_thread=100):
         """
-        Execute the billing process for all the list of invoices
+        Execute the billing process with threads according to the number of invoices
+        :param orders: list of invoices
+        :param number_threads: by default 4 threads
+        :param min_number_for_thread: by default 100 es the min value to use a thread
+        in the execution billing process
+        :return: None
+        """
+        n = len(orders)
+        if n < min_number_for_thread:
+            self.__real_make_invoices(orders)
+        else:
+            increment = n // number_threads
+            i = 0
+            start = 0
+            end = increment
+            thread_list = []
+
+            while i <= number_threads:
+                suborder = orders[start:end]
+                start = end
+                end += increment
+                i += 1
+                if len(suborder):
+                    thr = threading.Thread(
+                        target=self.__real_make_invoices,
+                        args=(orders[start:end],)
+                    )
+                    thr.start()
+                    thread_list.append(thr)
+
+            for thr in thread_list:
+                thr.join()
+
+    def __real_make_invoices(self, orders: list):
+        """
+        Execute the billing process for a group of list of invoices
         :param orders: list of invoice.Invoice object
         :return: None
         """
-        i = 1
-        code = 1
+        i = len(self.invoice_dict.keys()) + 1
+        code = i
         for order in orders:
             # create invoice header
 
@@ -67,7 +103,7 @@ class Billing:
             )
 
             invoice = Invoice(header, detail, footer)
-            self.invoice_list.append(invoice)
+            self.invoice_dict[i](invoice)
             i += 1
             code += 1
 
