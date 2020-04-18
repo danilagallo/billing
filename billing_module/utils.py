@@ -1,7 +1,48 @@
+import random
+
+from billing_module.client import Client
+from billing_module.order import Order
+from billing_module.product import Product
+from billing_module.product_detail import ProductDetail
+
+
 class Utils:
 
     @staticmethod
-    def percent_vat(self, code):
+    def generate_orders(number_of_orders):
+        # number_of_orders = 1000
+        orders = []
+        order_number_i = 1
+        client_number_i = 1
+        address = "local address for testing"
+        identity_type = ["DNI", "CUIT", "ETC"]
+        for n in range(number_of_orders):
+            order = Order(
+                order_number_i,
+                Client(
+                    client_number_i,
+                    f"{address} + client number:{client_number_i} client order:{order_number_i}",
+                    "tax_condition",
+                    identity_type[random.randrange(0, 3)],
+                    random.randrange(1000000, 9999999)
+                ),
+                ProductDetail(
+                    Product(
+                        random.randrange(1, 4),
+                        f"product{random.randrange(1, 100)}",
+                        random.randrange(20, 60)
+                    ),
+                    random.randrange(1, 5)
+                )
+            )
+            order_number_i += 1
+            client_number_i += 1
+            orders.append(order)
+
+        return orders
+
+    @staticmethod
+    def percent_vat(code):
         """
         Returns the VAT percent according to code
         :param code:
@@ -15,7 +56,7 @@ class Utils:
             return 70
 
     @staticmethod
-    def calculate_vat_value(self, code, price):
+    def calculate_vat_value(code, price):
         """
         Return the vat value according to cod and price
         :param code:
@@ -30,7 +71,7 @@ class Utils:
             return price * 0.70
 
     @staticmethod
-    def calculate_net_price(self, price, quantity):
+    def calculate_net_price(price, quantity):
         """
         Return net price
         :param price:
@@ -40,7 +81,7 @@ class Utils:
         return price * quantity
 
     @staticmethod
-    def calculate_sale_price(self, net_price, vat_value):
+    def calculate_sale_price(net_price, vat_value):
         """
         Return sale price
         :param net_price:
@@ -50,7 +91,7 @@ class Utils:
         return net_price + vat_value
 
     @staticmethod
-    def get_all(self, code, price, quantity):
+    def get_all(code, price, quantity):
         """
         Return a dictionary with all the calculations related to an invoice
         :param code:

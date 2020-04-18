@@ -1,4 +1,4 @@
-from src.product import Product
+from billing_module.product import Product
 
 
 class ProductDetail:

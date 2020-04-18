@@ -1,5 +1,5 @@
-from src.credit_note_header import CreditNoteHeader
-from src.credit_note_footer import CreditNoteFooter
+from billing_module.credit_note_header import CreditNoteHeader
+from billing_module.credit_note_footer import CreditNoteFooter
 
 
 class CreditNote:

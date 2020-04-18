@@ -7,7 +7,7 @@ def read(file_name):
 
 
 setup(
-    name="billing",
+    name="billing_module",
     version="0.0.2",
     author="Danila",
     author_email="danilamgallo@gmail.com",
@@ -15,7 +15,7 @@ setup(
     license="BSD",
     keywords="billing invoice",
     url="https://github.com/danilagallo",
-    packages=['src', 'tests'],
+    packages=['billing_module', 'tests'],
     long_description=read('README.md'),
     python_requires='>=3.6',
 )

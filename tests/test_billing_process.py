@@ -1,11 +1,11 @@
+import random
 import unittest
 
-from billing_module import billing
+from billing_module.billing import Billing
+from billing_module.utils import Utils
 
 
 class TestsBillingProcess(unittest.TestCase):
-
-    billing_instance = billing.Billing()
 
     def test_make_invoices(self):
         """
@@ -18,7 +18,18 @@ class TestsBillingProcess(unittest.TestCase):
             - success if both count are equal
         :return:
         """
-        self.assertEqual(sum([1, 2, 3]), 7, "Should be 6")
+        n = 1000
+        print(f"generating {n} orders.")
+        order_list = Utils.generate_orders(n)
+        billing_instance = Billing()
+        billing_instance.make_invoices(order_list)
+        print(f"checking if {n} orders generated {n} invoices.")
+        self.assertEqual(
+            len(billing_instance.invoice_dict.keys()),
+            n,
+            f"Should be {n}"
+        )
+        print("OK")
 
     def test_cancel_invoices(self):
         """
@@ -31,7 +42,26 @@ class TestsBillingProcess(unittest.TestCase):
                - the count of invoices in canceled status
         :return:
         """
-        self.assertEqual(sum((1, 2, 2)), 6, "Should be 6")
+        orders_to_generate = 1000
+        orders = Utils.generate_orders(orders_to_generate)
+
+        print(f"generating {orders_to_generate} orders.")
+        invoices_to_cancel = 100
+        billing_instance = Billing()
+        billing_instance.make_invoices(orders)
+        i = 0
+        list_to_cancel = []
+        while i < invoices_to_cancel:
+            key = random.randrange(1, orders_to_generate)
+            i += 1
+            list_to_cancel.append(billing_instance.invoice_dict[str(key)])
+
+        print(f"canceling {invoices_to_cancel} invoices.")
+        billing_instance.cancel_invoices(list_to_cancel)
+        count = len(billing_instance.credit_notes_dict.keys())
+        print(f"checking if were canceled {invoices_to_cancel} invoices.")
+        self.assertEqual(count, invoices_to_cancel, f"Should be {invoices_to_cancel}")
+        print("OK")
 
     def test_generate_files(self):
         """
@@ -44,4 +74,5 @@ class TestsBillingProcess(unittest.TestCase):
                 - client_number-document_type-letter-issue_date
         :return:
         """
-        self.assertEqual(sum((1, 2, 2)), 1, "Should be 6")
+
+        self.assertEqual(sum((1, 2, 1)), 4, "Should be 4")

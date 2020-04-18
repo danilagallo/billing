@@ -1,4 +1,4 @@
-from src.client import Client
+from billing_module.client import Client
 
 
 class CreditNoteHeader:

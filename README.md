@@ -20,4 +20,3 @@ Execute tests.py
 ### Command line
 python -m unittest discover -s tests
 note: Execute the code in root path
-

@@ -1,5 +1,5 @@
-from src.client import Client
-from src.product_detail import ProductDetail
+from billing_module.client import Client
+from billing_module.product_detail import ProductDetail
 
 
 class Order:

@@ -1,4 +1,4 @@
-from src.product import Product
+from billing_module.product import Product
 
 
 class InvoiceDetail:
@@ -12,4 +12,4 @@ class InvoiceDetail:
         self.sale_price = sale_price
         self.net_price = net_price
         self.vat_value = vat_value
-        self.status = "in_progress"
+
