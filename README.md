@@ -7,7 +7,7 @@ python setup.py sdist
 pip install twine
 
 note: you need a python pip account in pypi.org before continue 
-twine upload dist/*
+python -m twine upload dist/*
 
 ##How to use
 pip install billing_module
