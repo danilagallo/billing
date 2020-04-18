@@ -6,7 +6,7 @@ python setup.py sdist
 ##upload to pip
 pip install twine
 
-note: you need a python pip in pypi.org account before continue 
+note: you need a python pip account in pypi.org before continue 
 twine upload dist/*
 
 ##How to use
